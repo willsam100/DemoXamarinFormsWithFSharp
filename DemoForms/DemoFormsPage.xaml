@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms" 
+	         xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" 
+	         xmlns:constants="clr-namespace:DemoForms;assembly=DemoForms" 
+	         x:Class="DemoForms.DemoFormsPage">
+	<ContentPage.Padding>
+    <OnPlatform x:TypeArguments="Thickness"
+                iOS="0, 20, 0, 0" />
+  	</ContentPage.Padding>
+	<StackLayout VerticalOptions="StartAndExpand">
+		<Entry x:Name= "entry" Text="{Binding Entry, Mode=TwoWay}" VerticalOptions="Center" HorizontalOptions="FillAndExpand" />
+		<Button Command="{Binding Clicked}" Text="Add Task" VerticalOptions="Center" HorizontalOptions="Center" />
+		<ListView x:Name="listView" ItemsSource="{Binding Todos}" VerticalOptions="FillAndExpand"/>
+	</StackLayout>
+</ContentPage>
