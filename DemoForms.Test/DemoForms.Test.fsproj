@@ -43,12 +43,6 @@
     <Reference Include="nunit.framework">
       <HintPath>..\packages\NUnit.3.6.1\lib\net45\nunit.framework.dll</HintPath>
     </Reference>
-    <Reference Include="FsCheck">
-      <HintPath>..\packages\FsCheck.2.7.2\lib\net45\FsCheck.dll</HintPath>
-    </Reference>
-    <Reference Include="FsCheck.NUnit">
-      <HintPath>..\packages\FsCheck.NUnit.2.7.2\lib\net45\FsCheck.NUnit.dll</HintPath>
-    </Reference>
     <Reference Include="Xamarin.Forms.Core">
       <HintPath>..\packages\Xamarin.Forms.2.3.3.193\lib\portable-win+net45+wp80+win81+wpa81+MonoAndroid10+Xamarin.iOS10+xamarinmac20\Xamarin.Forms.Core.dll</HintPath>
     </Reference>
@@ -57,6 +51,9 @@
     </Reference>
     <Reference Include="Xamarin.Forms.Xaml">
       <HintPath>..\packages\Xamarin.Forms.2.3.3.193\lib\portable-win+net45+wp80+win81+wpa81+MonoAndroid10+Xamarin.iOS10+xamarinmac20\Xamarin.Forms.Xaml.dll</HintPath>
+    </Reference>
+    <Reference Include="FsUnit.NUnit">
+      <HintPath>..\packages\FsUnit.3.0.0\lib\net45\FsUnit.NUnit.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>

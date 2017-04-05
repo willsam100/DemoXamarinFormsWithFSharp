@@ -1,44 +1,27 @@
 ﻿module DemoForms.Model
 open System
 
+type Status = 
+    | Completed 
+    | Current
+
 type TodoItem = {
     Task: string 
-    DueDate: DateTime
-    IsCompleted: bool
+    Status: Status
 }
+ with 
+    override this.ToString() = sprintf "T: %s, S: %A" this.Task this.Status
 
-let newTask task dueDate =
-    {Task = task; DueDate = dueDate; IsCompleted = false}
+type Item = 
+    | Task of TodoItem 
+    | Note of string
+        override x.ToString() =
+            match x with 
+            | Task x -> x.ToString()
+            | Note x -> x
+
+let newTask task =
+    {Task = task; Status = Current}
 
 let completeTask task = 
-    {task with IsCompleted = true}
-
-let findNextTask (tasks: TodoItem list) = 
-    match tasks with 
-    [] -> None
-    | first::rest -> 
-        tasks 
-        |> List.toSeq
-        |> Seq.filter (fun x -> not x.IsCompleted)
-        |> Seq.minBy (fun x -> x.DueDate)
-        |> Some
-
-type Animal = 
-    | Dog
-    | Cat
-
-let speak a = 
-    match a with 
-    | Dog -> "Bark, Bark"
-    | Cat -> "Meow, Meow" 
-
-let toAnimal a = 
-    match a with 
-    | "dog" -> Dog
-    | "cat" -> Cat
-    | _ -> Dog
-
-let toString a = 
-    match a with 
-    | Dog -> "dog"
-    | Cat -> "cat"
+    {task with Status = Completed}
