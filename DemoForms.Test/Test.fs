@@ -5,6 +5,7 @@ open Model
 
 [<TestFixture>]
 type Tests() = 
+    let createViewModel () = DemoViewModel()
 
     let setEntry task (vm: DemoViewModel) = 
         vm.Entry <- task
@@ -19,7 +20,7 @@ type Tests() =
         let task = vm.Todos |> Seq.filter (fun x -> x |> getText = task) |> Seq.head
         (task, vm)
 
-    let complete (item, vm: DemoViewModel) = 
+    let completeTask (item, vm: DemoViewModel) = 
         vm.SelectedItem <- item
         vm
 
@@ -27,18 +28,19 @@ type Tests() =
         vm.AddTask.Execute null 
         vm
 
+    // Arguments can be ommited if the a function is returned. type is: getTask(item: Item): String
     let getTask = function
     | Task x -> x.Task
     | Note x -> failwith "Not a task"
 
     [<Test>]
-    member this.Command_Adds_Entry_to_list () =
+    member this.``Command Adds Entry to list`` () =
 
         let task = "my task"
-        let vm = DemoViewModel()
+        let vm = createViewModel ()
         vm.Entry <- task
 
-        vm.Clicked.Execute null
+        vm.AddTask.Execute null
 
         Assert.IsTrue(1 = vm.Todos.Count)
 
@@ -46,13 +48,9 @@ type Tests() =
     member this.``Command with builder pattern`` () =
             
         let task = "my task"
-        let vm = DemoViewModel() |> setEntry task
+        let vm = createViewModel() |> setEntry task
 
         vm.AddTask.Execute null
-
-        let getTask = function
-        | Task x -> x.Task
-        | Note x -> failwith "Not a task"
 
         vm.Todos |> Seq.head |> getTask = task |> Assert.IsTrue
 
@@ -60,7 +58,7 @@ type Tests() =
     member this.``Command with FsUnit`` () =
             
         let task = "my task"
-        let vm = DemoViewModel() |> setEntry task
+        let vm = createViewModel() |> setEntry task
 
         vm.AddTask.Execute null
 
@@ -72,12 +70,16 @@ type Tests() =
         let task = "my task"
 
         let vm = 
-            DemoViewModel() 
+            createViewModel() 
             |> setEntry task 
             |> addTask 
             |> getTaskForString task 
-            |> complete
+            |> completeTask
 
-        vm.Todos |> Seq.head |> getTask |> should be (equal task)
+        let task = vm.Todos |> Seq.head
+
+        match task with 
+        | Task x -> x.Status |> should be (equal Completed)
+        | _ -> failwith "Not a task"
 
 

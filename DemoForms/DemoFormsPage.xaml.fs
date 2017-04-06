@@ -1,23 +1,26 @@
 ﻿namespace DemoForms
 
-open System
-open System.Diagnostics
 open Xamarin.Forms
 open Xamarin.Forms.Xaml
 open System.Collections.ObjectModel
-
 open Model
 
-type TaskViewModel() as this = 
+type DemoViewModel() as this = 
 
+    // The type of the colleciton is inferred based on its usage
     let collection = ObservableCollection()
 
     let markTaskAsCompleted x = 
+
+        // The F# compiler is strict and will throw a warning if you do not use the result of calling a function/method
+        // Must be explict about this. Send the result to the ignore function to do this. 
         collection.Remove (Task x) |> ignore
         x |> completeTask |> Task |> collection.Add
 
     let addTask () = 
         let task = Task (newTask this.Entry)
+
+        // Since DUs and Records implement equaitly, contains will work as we want it. 
         match collection.Contains task with 
         | false -> collection.Add task
         | true -> ()
@@ -28,14 +31,16 @@ type TaskViewModel() as this =
         | false -> collection.Add note
         | true -> ()
 
+
+    let addTask = Command addTask
+    let addNote = Command addNote
+
     member val Entry = "" with get, set
     member this.Todos = collection
-    member this.AddTask 
-        with get(): Command = new Command(addTask)
+    member this.AddTask with get() = addTask
+    member this.AddNote with get() = addNote
 
-    member this.AddNote 
-        with get(): Command = new Command(addNote)
-
+    // Syntax for overriding setters and getters
     member this.SelectedItem 
         with get() = null
         and set(value) = 
@@ -44,24 +49,9 @@ type TaskViewModel() as this =
             | Note _ -> ()
 
 
-
-type DemoViewModel() = 
-
-    let collection: ObservableCollection<string> = new ObservableCollection<string>()
-
-    member val Entry = "" with get, set
-
-    member this.Todos: ObservableCollection<string> = collection
-
-    member this.AddItem(): unit  = collection.Add(this.Entry)
-
-    member this.Clicked 
-        with get(): Command = new Command(this.AddItem)
-
-
 type DemoFormsPage() as this =
     inherit ContentPage()
 
     let _ = base.LoadFromXaml(typeof<DemoFormsPage>)
-    do this.BindingContext <- new TaskViewModel()
+    do this.BindingContext <- new DemoViewModel()
 
