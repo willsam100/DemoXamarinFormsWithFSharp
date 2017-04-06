@@ -49,18 +49,18 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AssemblyInfo.fs" />
     <Compile Include="Model.fs" />
-    <EmbeddedResource Include="App.xaml" />
     <EmbeddedResource Include="DemoFormsPage.xaml">
 			<Generator>MSBuild:UpdateDesignTimeXaml</Generator>
 	</EmbeddedResource>
     <Compile Include="DemoFormsPage.xaml.fs">
       <DependentUpon>DemoFormsPage.xaml</DependentUpon>
     </Compile>
+    <EmbeddedResource Include="App.xaml" />
     <Compile Include="App.xaml.fs">
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
-    <Compile Include="AssemblyInfo.fs" />
     <None Include="packages.config" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)\FSharp\Microsoft.Portable.FSharp.Targets" />
