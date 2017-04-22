@@ -12,12 +12,7 @@ type Tests() =
         vm
 
     let getTaskForString task (vm: DemoViewModel) = 
-
-        let getText = function 
-            | Task x -> x.Task
-            | Note x -> x
-
-        let task = vm.Todos |> Seq.filter (fun x -> x |> getText = task) |> Seq.head
+        let task = vm.Todos |> Seq.filter (fun x -> x.Task = task) |> Seq.head
         (task, vm)
 
     let completeTask (item, vm: DemoViewModel) = 
@@ -27,11 +22,6 @@ type Tests() =
     let addTask (vm: DemoViewModel) = 
         vm.AddTask.Execute null 
         vm
-
-    // Arguments can be ommited if the a function is returned. type is: getTask(item: Item): String
-    let getTask = function
-    | Task x -> x.Task
-    | Note x -> failwith "Not a task"
 
     [<Test>]
     member this.``Command Adds Entry to list`` () =
@@ -52,7 +42,7 @@ type Tests() =
 
         vm.AddTask.Execute null
 
-        vm.Todos |> Seq.head |> getTask = task |> Assert.IsTrue
+        vm.Todos |> Seq.head |> (fun x -> x.Task = task) |> Assert.IsTrue
 
     [<Test>]
     member this.``Command with FsUnit`` () =
@@ -62,7 +52,7 @@ type Tests() =
 
         vm.AddTask.Execute null
 
-        vm.Todos |> Seq.head |> getTask |> should be (equal task)
+        vm.Todos |> Seq.head |> (fun x -> x.Task) |> should be (equal task)
 
     [<Test>]
     member this.``Create Task And Mark As Completed`` () =
@@ -78,8 +68,6 @@ type Tests() =
 
         let task = vm.Todos |> Seq.head
 
-        match task with 
-        | Task x -> x.Status |> should be (equal Completed)
-        | _ -> failwith "Not a task"
+        task.Status |> should be (equal Completed)
 
 
