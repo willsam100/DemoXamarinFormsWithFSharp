@@ -11,25 +11,16 @@ type DemoViewModel() as this =
     let collection = ObservableCollection()
 
     let markTaskAsCompleted x = 
+        match x with 
+        | Task todo -> x |> collection.Remove |> ignore
+                       todo |> completeTask |> Task |> collection.Add
+        | Note _ -> ()
 
-        // The F# compiler is strict and will throw a warning if you do not use the result of calling a function/method
-        // Must be explict about this. Send the result to the ignore function to do this. 
-        collection.Remove (Task x) |> ignore
-        x |> completeTask |> Task |> collection.Add
+    let addTask () =  
+        newTask this.Entry |> Task |> collection.Add
 
-    let addTask () = 
-        let task = Task (newTask this.Entry)
-
-        // Since DUs and Records implement equaitly, contains will work as we want it. 
-        match collection.Contains task with 
-        | false -> collection.Add task
-        | true -> ()
-
-    let addNote () = 
-        let note = Note this.Entry
-        match collection.Contains note with 
-        | false -> collection.Add note
-        | true -> ()
+    let addNote () =   
+        Note this.Entry |> collection.Add
 
 
     let addTask = Command addTask
@@ -44,10 +35,7 @@ type DemoViewModel() as this =
     member this.SelectedItem 
         with get() = null
         and set(value) = 
-            match unbox value with 
-            | Task x -> markTaskAsCompleted x
-            | Note _ -> ()
-
+            markTaskAsCompleted <| unbox value
 
 type DemoFormsPage() as this =
     inherit ContentPage()
