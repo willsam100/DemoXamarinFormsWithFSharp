@@ -5,14 +5,14 @@ type Status =
     | Current
 
 type TodoItem = {
-    Task: string 
+    Action: string 
     Status: Status
 }
  with 
-    override this.ToString() = sprintf "T: %s, S: %A" this.Task this.Status
+    override this.ToString() = sprintf "T: %s, S: %A" this.Action this.Status
 
-let newTask task =
-    {Task = task; Status = Current}
+let newTodo todo =
+    {Action = todo; Status = Current}
 
-let completeTask task = 
-    {task with Status = Completed}
+let completeTodo todo = 
+    {todo with Status = Completed}
