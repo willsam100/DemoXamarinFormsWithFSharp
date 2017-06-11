@@ -10,7 +10,7 @@
 	<StackLayout VerticalOptions="StartAndExpand">
 		<Entry Text="{Binding Entry, Mode=TwoWay}" VerticalOptions="Center" HorizontalOptions="FillAndExpand" />
 		<StackLayout Orientation="Horizontal" HorizontalOptions="Center" Spacing="50">
-			<Button Command="{Binding AddTask}" Text="Add Task" VerticalOptions="Center" HorizontalOptions="Center" />
+			<Button Command="{Binding AddTodo}" Text="Add Todo" VerticalOptions="Center" HorizontalOptions="Center" />
 			<Button Command="{Binding AddNote}" Text="Add Note" VerticalOptions="Center" HorizontalOptions="Center" />
 		</StackLayout>
 		<ListView x:Name="listView" ItemsSource="{Binding Todos}" SelectedItem="{Binding SelectedItem, Mode=TwoWay}" VerticalOptions="FillAndExpand"/>

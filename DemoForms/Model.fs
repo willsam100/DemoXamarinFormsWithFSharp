@@ -1,27 +1,26 @@
 ﻿module DemoForms.Model
-open System
 
 type Status = 
     | Completed 
     | Current
 
 type TodoItem = {
-    Task: string 
+    Action: string 
     Status: Status
 }
  with 
-    override this.ToString() = sprintf "T: %s, S: %A" this.Task this.Status
+    override this.ToString() = sprintf "T: %s, S: %A" this.Action this.Status
 
 type Item = 
-    | Task of TodoItem 
+    | Todo of TodoItem 
     | Note of string
         override x.ToString() =
             match x with 
-            | Task x -> x.ToString()
+            | Todo x -> x.ToString()
             | Note x -> x
 
-let newTask task =
-    {Task = task; Status = Current}
+let newTodo task =
+    {Action = task; Status = Current}
 
-let completeTask task = 
+let completeTodo task = 
     {task with Status = Completed}

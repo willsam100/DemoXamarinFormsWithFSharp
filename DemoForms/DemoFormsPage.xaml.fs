@@ -10,32 +10,32 @@ type DemoViewModel() as this =
     // The type of the colleciton is inferred based on its usage
     let collection = ObservableCollection()
 
-    let markTaskAsCompleted x = 
+    let markTodoAsCompleted x = 
         match x with 
-        | Task todo -> x |> collection.Remove |> ignore
-                       todo |> completeTask |> Task |> collection.Add
+        | Todo todo -> x |> collection.Remove |> ignore
+                       todo |> completeTodo |> Todo |> collection.Add
         | Note _ -> ()
 
-    let addTask () =  
-        newTask this.Entry |> Task |> collection.Add
+    let addTodo () =  
+        newTodo this.Entry |> Todo |> collection.Add
 
     let addNote () =   
         Note this.Entry |> collection.Add
 
 
-    let addTask = Command addTask
+    let addTodo = Command addTodo
     let addNote = Command addNote
 
     member val Entry = "" with get, set
     member this.Todos = collection
-    member this.AddTask with get() = addTask
+    member this.AddTodo with get() = addTodo
     member this.AddNote with get() = addNote
 
     // Syntax for overriding setters and getters
     member this.SelectedItem 
         with get() = null
         and set(value) = 
-            markTaskAsCompleted <| unbox value
+            markTodoAsCompleted(unbox(value))
 
 type DemoFormsPage() as this =
     inherit ContentPage()
