@@ -9,7 +9,7 @@
   	</ContentPage.Padding>
 	<StackLayout VerticalOptions="StartAndExpand">
 		<Entry Text="{Binding Entry, Mode=TwoWay}" VerticalOptions="Center" HorizontalOptions="FillAndExpand" />
-		<Button Command="{Binding AddTask}" Text="Add Task" VerticalOptions="Center" HorizontalOptions="Center" />
+		<Button Command="{Binding AddTodo}" Text="Add Todo" VerticalOptions="Center" HorizontalOptions="Center" />
 		<ListView x:Name="listView" ItemsSource="{Binding Todos}" SelectedItem="{Binding SelectedItem, Mode=TwoWay}" VerticalOptions="FillAndExpand"/>
 	</StackLayout>
 </ContentPage>
