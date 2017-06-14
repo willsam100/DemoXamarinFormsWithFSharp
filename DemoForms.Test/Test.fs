@@ -7,67 +7,69 @@ open Model
 type Tests() = 
     let createViewModel () = DemoViewModel()
 
-    let setEntry task (vm: DemoViewModel) = 
-        vm.Entry <- task
+    let setEntry todo (vm: DemoViewModel) = 
+        vm.Entry <- todo
         vm
 
-    let getTaskForString task (vm: DemoViewModel) = 
-        let task = vm.Todos |> Seq.filter (fun x -> x.Task = task) |> Seq.head
-        (task, vm)
+    let getTodoForString todo (vm: DemoViewModel) = 
+        let todo = vm.Todos |> Seq.filter (fun x -> x.Action = todo) |> Seq.head
+        (todo, vm)
 
-    let completeTask (item, vm: DemoViewModel) = 
+    let completeTodo (item, vm: DemoViewModel) = 
         vm.SelectedItem <- item
         vm
 
-    let addTask (vm: DemoViewModel) = 
-        vm.AddTask.Execute null 
+    let addTodo (vm: DemoViewModel) = 
+        vm.AddTodo.Execute null 
         vm
 
     [<Test>]
     member this.``Command Adds Entry to list`` () =
 
-        let task = "my task"
+        let todo = "my todo"
         let vm = createViewModel ()
-        vm.Entry <- task
+        vm.Entry <- todo
 
-        vm.AddTask.Execute null
+        vm.AddTodo.Execute null
 
         Assert.IsTrue(1 = vm.Todos.Count)
 
     [<Test>]
     member this.``Command with builder pattern`` () =
             
-        let task = "my task"
-        let vm = createViewModel() |> setEntry task
+        let todo = "my todo"
+        let vm = 
+            createViewModel() 
+            |> setEntry todo
+            |> addTodo
 
-        vm.AddTask.Execute null
-
-        vm.Todos |> Seq.head |> (fun x -> x.Task = task) |> Assert.IsTrue
+        vm.Todos |> Seq.head |> (fun x -> x.Action = todo) |> Assert.IsTrue
 
     [<Test>]
     member this.``Command with FsUnit`` () =
             
-        let task = "my task"
-        let vm = createViewModel() |> setEntry task
+        let todo = "my todo"
+        let vm = 
+            createViewModel() 
+            |> setEntry todo
+            |> addTodo
 
-        vm.AddTask.Execute null
-
-        vm.Todos |> Seq.head |> (fun x -> x.Task) |> should be (equal task)
+        vm.Todos |> Seq.head |> (fun x -> x.Action) |> should be (equal todo)
 
     [<Test>]
-    member this.``Create Task And Mark As Completed`` () =
+    member this.``Create Todo And Mark As Completed`` () =
             
-        let task = "my task"
+        let todo = "my todo"
 
         let vm = 
             createViewModel() 
-            |> setEntry task 
-            |> addTask 
-            |> getTaskForString task 
-            |> completeTask
+            |> setEntry todo 
+            |> addTodo 
+            |> getTodoForString todo 
+            |> completeTodo
 
-        let task = vm.Todos |> Seq.head
+        let todo = vm.Todos |> Seq.head
 
-        task.Status |> should be (equal Completed)
+        todo.Status |> should be (equal Completed)
 
 
